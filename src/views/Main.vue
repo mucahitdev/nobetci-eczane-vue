@@ -4,17 +4,17 @@
       <div class="row">
         <div class="mr-2">
           <select class="custom-select" name="il" id="il" v-model="form.cityId">
-            <option>İli Seçiniz</option>
+            <option disabled :value="null">İli seç</option>
             <option v-for="city in cities" :key="city.id" :value="city.id">{{ city.name }}</option>
           </select>
         </div>
         <div class="mr-2">
           <select class="custom-select" name="ilce" id="ilce" v-model="form.districtId">
-            <option>İlçeyi Seçiniz...</option>
+            <option disabled :value="null">İlçeyi seç</option>
             <option v-for="district in filteredDistricts" :key="district.id" :value="district.id">{{ district.name }}</option>
           </select>
         </div>
-        <button  class="btn btn-primary" @click="bul">Nöbetçi Eczaneyi Bul</button>
+        <button  class="btn btn-secondary" @click="bul">Nöbetçi Eczaneyi Bul</button>
       </div>
     </div>
 
@@ -36,7 +36,7 @@
         <td>{{ item.address }}</td>
         <td>
           <a :href="mapUrl(item.loc)" target="_blank">
-            <b-button pill variant="success">Haritada Göster</b-button>
+            <b-button pill variant="secondary">Haritada Göster</b-button>
           </a>
 
 
@@ -127,6 +127,11 @@ body {
 body {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
+.main{
+  background-image: url("https://images.pexels.com/photos/1484759/pexels-photo-1484759.jpeg?cs=srgb&dl=pexels-steve-johnson-1484759.jpg&fm=jpg");
+  background-repeat:no-repeat;
+  background-size: cover;
+}
 .search{
   display: flex;
   align-items: center;
@@ -135,10 +140,10 @@ body {
   height: 100%;
 }
 .active {
-  margin-top: 50px;
+  padding-top: 50px;
   display: flex;
   justify-content: center;
-  transition: margin-top 3s;
+  transition: padding-top 3s;
 }
 
 table {
@@ -171,7 +176,7 @@ td {
 th {
   position: sticky;
   top: 0;
-  background: #6c7ae0;
+  background: #0389bc;
   text-align: left;
   font-weight: normal;
   font-size: 1.1rem;
@@ -207,10 +212,12 @@ th:hover .resize-handle {
 td {
   padding-top: 10px;
   padding-bottom: 10px;
-  color: #808080;
+  font-weight: 600;
+  color: black;
+  background: inherit;
 }
 
 tr:nth-child(even) td {
-  background: #f8f6ff;
+  background: inherit;
 }
 </style>
