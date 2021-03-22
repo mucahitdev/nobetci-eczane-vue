@@ -3,13 +3,13 @@
     <div  class="container" :class="{active:clicked,search:!clicked}" >
       <div class="row">
         <div class="mr-2">
-          <select class="custom-select" name="il" id="il" v-model="form.cityId">
+          <select class="custom-select slc1" name="il" id="il" v-model="form.cityId">
             <option disabled :value="null">İli seç</option>
             <option v-for="city in cities" :key="city.id" :value="city.id">{{ city.name }}</option>
           </select>
         </div>
         <div class="mr-2">
-          <select class="custom-select" name="ilce" id="ilce" v-model="form.districtId">
+          <select class="custom-select slc2" name="ilce" id="ilce" v-model="form.districtId">
             <option disabled :value="null">İlçeyi seç</option>
             <option v-for="district in filteredDistricts" :key="district.id" :value="district.id">{{ district.name }}</option>
           </select>
@@ -18,11 +18,11 @@
       </div>
     </div>
 
-    <table>
-      <thead v-show="params.city !==null">
+<!--    <table v-show="false"> ////////    Kullanılabilir
+      <thead v-show="false">//params.city !==null
       <tr>
-        <th data-type="text-short">ECZANENİN ADI<span class="resize-handle"></span></th>
-        <th data-type="text-short">BULUNDUĞU İLÇE<span class="resize-handle"></span></th>
+        <th  data-type="text-short">ECZANENİN ADI<span class="resize-handle"></span></th>
+        <th  data-type="text-short">BULUNDUĞU İLÇE<span class="resize-handle"></span></th>
         <th data-type="numeric">TELEFON NUMARASI<span class="resize-handle"></span></th>
         <th data-type="text-short">ADRESİ<span class="resize-handle"></span></th>
         <th data-type="text-short">KONUM<span class="resize-handle"></span></th>
@@ -38,12 +38,33 @@
           <a :href="mapUrl(item.loc)" target="_blank">
             <b-button pill variant="secondary">Haritada Göster</b-button>
           </a>
-
-
         </td>
       </tr>
       </tbody>
-    </table>
+    </table>-->
+
+    <div v-show="params.city !==null" class="accordion" role="tablist">
+      <b-card no-body class="mb-1" v-for="(item,key) in items" :key="key">
+        <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-button block v-b-toggle.accordion-1 variant="info">{{ item.name }}</b-button>
+        </b-card-header>
+        <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
+          <b-card-body>
+            <b-card-text>{{ item.dist }}</b-card-text>
+            <b-card-text>{{ item.address }}</b-card-text>
+            <b-card-text>{{ item.phone }}</b-card-text>
+            <a :href="mapUrl(item.loc)" target="_blank">
+              <b-button pill variant="secondary">Haritada Göster</b-button>
+            </a>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+    </div>
+
+
+
+
+
   </div>
 </template>
 
@@ -67,7 +88,8 @@ export default {
         city:null
 
       },
-      clicked:false
+      clicked:false,
+      apiKey:"apikey 1IqfcgubrjtY9FFQQHnxnr:2DFKqKfLYgyXRXHxNNiuJ9"//Size ait api keyinizi kullanın
     }
   },
   methods: {
@@ -85,7 +107,7 @@ export default {
         url: 'https://api.collectapi.com/health/dutyPharmacy',
         params: {il:this.params.city , ilce: this.params.district},
         headers: {
-          'authorization': 'apikey ',//Size ait api keyinizi kullanın
+          'authorization': this.apiKey,
           "content-type": "application/json"
         }
       };
@@ -128,35 +150,80 @@ body {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 .main{
-  background-image: url("https://images.pexels.com/photos/1484759/pexels-photo-1484759.jpeg?cs=srgb&dl=pexels-steve-johnson-1484759.jpg&fm=jpg");
-  background-repeat:no-repeat;
+  background: url("https://images.pexels.com/photos/1484759/pexels-photo-1484759.jpeg?cs=srgb&dl=pexels-steve-johnson-1484759.jpg&fm=jpg") no-repeat fixed;
   background-size: cover;
 }
+.slc1{
+  margin: 0 30px 10px;
+  @media (--t) {
+  margin: 0;
+  }
+}
+.slc2{
+  margin: 0 50px;
+  max-width: 205px;
+  @media (--t) {
+    margin: 0;
+  }
+}
 .search{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width:100%;
-  height: 100%;
+  padding-top: 70%;
+  padding-left: 15%;
+  @media (--t) {
+    padding-top: 0;
+    padding-left:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    height: 100%;
+  }
 }
 .active {
-  padding-top: 50px;
-  display: flex;
-  justify-content: center;
-  transition: padding-top 3s;
+  display: table-column;
+  @media (--t) {
+    color: #0389bc;
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+    transition: padding-top 3s;
+  }
+}
+.btn-secondary{
+  margin-top: 23px;
+  margin-left: 18%;
+  @media (--t) {
+    margin-top: 0;
+    margin-left: 0;
+  }
 }
 
 table {
-  margin-top: 50px;
+  margin-top: 0;
   display: grid;
   border-collapse: collapse;
   min-width: 100%;
   grid-template-columns:
     minmax(150px, 1fr)
-    minmax(150px, 1.67fr)
-    minmax(150px, 1.67fr)
-    minmax(150px, 1.67fr)
+
+    minmax(150px, 1fr);
+  @media (--t) {
+    margin-top: 50px;
+    display: grid;
+    border-collapse: collapse;
+    min-width: 100%;
+    grid-template-columns:
     minmax(150px, 1fr)
+    minmax(150px, 1.67fr)
+    minmax(150px, 1.67fr)
+    minmax(150px, 1.67fr)
+    minmax(150px, 1fr);
+
+  }
+
+}
+thead{
+  display: none;
 }
 
 thead,
